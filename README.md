@@ -6,7 +6,7 @@
 
 ## v2.0 改动 (2026-11-24)
 
-1. **新增 Muse 专组**: 新建 `Clash/rules/muse.yaml`, 只收已核实的 4 条后缀: `meta.ai`、`metaaivm.com`、`metaaiusercontent.com`、`muse.ai`。注意: 这几条其实已在原 `category-ai-!cn` 的 Meta 小节里, 本组是「独立成组」——规则排在通用 AI 组之前 (否则 first-match 永远命中不了), 以后能给 Muse 单独选节点 (比如固定美国节点、避开香港)。meta.com 系、facebook.com、fbcdn.net 等暂未收录, 需用 FlClash 连接记录核对 Muse App 实际命中的域名后再补, 不要整段照抄 (那是 Facebook/Instagram/WhatsApp 共用的)。来源: v2fly domain-list-community 的 meta 清单、VPSDance/ai-proxy-rules 的 meta-ai provider。
+1. **新增 Muse 专组**: 新建 `Clash/rules/muse.yaml`。v2.1 起按「宁错杀不放过」全量收录 (2026-11-24 用户定): muse.ai、meta.ai、metaaivm.com、metaaiusercontent.com、meta.com 整段、llama.com、llamameta.net、atmeta.com, 以及 Facebook 系共用域名 facebook.com / facebook.net / fbcdn.net / fbsbx.com / fb.com / fb.me / fb.watch / facebookmail.com。规则排在通用 AI 组之前 (否则 first-match 永远命中不了), Muse 组默认优先美国节点。注意代价: fbcdn/facebook 与 Instagram/WhatsApp 共用, 也会跟着走 Muse 组的节点。来源: v2fly domain-list-community 的 meta 清单、VPSDance/ai-proxy-rules 的 meta-ai provider。
 2. **广告拦截真正生效**: 原仓库有 `ads.yaml` 但脚本从未引用, v2.0 接入「广告拦截」组 (默认 REJECT)。
 3. **Disney+ / 加密货币组**: 同样是仓库里有规则文件却没接线的, 现已接入。
 4. **Steam 下载直连**: 新增「Steam下载」组默认国内直连, 游戏下载不耗代理流量; Steam 商店/社区仍走 Steam 组。

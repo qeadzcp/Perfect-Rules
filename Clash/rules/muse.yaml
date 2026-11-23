@@ -1,20 +1,40 @@
-# Muse / Meta AI 分流规则 (v2.0 新增)
+# Muse / Meta AI 分流规则 (v2.0 新增, v2.1 全量版)
 # 维护: qeadzcp/Perfect-Rules
-# 核实 (2026-11-24, 浏览器只读核查):
-#  - v2fly domain-list-community 的 category-ai-!cn 里「# Meta」小节确实包含
-#    meta.ai、metaaivm.com、metaaiusercontent.com、muse.ai (无 meta.com、无 facebook)。
-#  - 也就是说 meta.ai 今天其实已经走原 AI 组了; 本组的作用是「独立成组」,
-#    以后能给 Muse 单独选节点 (比如固定美国节点、避开香港), 并排在 AI 组之前,
-#    否则按 first-match 永远匹配不到。
-# 未收录、待用户用 FlClash 连接记录核对后再补:
-#  - meta.com 系 (llama.meta.com、imagine.meta.com)、graph.facebook.com、*.facebook.com、
-#    *.fbcdn.net —— 这些是 Facebook/Instagram/WhatsApp 共用的, 整段改走美国节点
-#    可能拖慢其他应用, 只加 Muse App 实际命中的 host, 不要整段照抄。
+# 核实 (2026-11-24):
+#  - v2fly domain-list-community 的 category-ai-!cn 里「# Meta」小节包含
+#    meta.ai、metaaivm.com、metaaiusercontent.com、muse.ai。
+#  - VPSDance/ai-proxy-rules 的 meta-ai provider 另含 llama.com、llamameta.net、atmeta.com。
+# 策略 (2026-11-24 用户定): 宁错杀不放过 —— Meta/Facebook 共用域名整段收录,
+#  不再等连接记录逐个核对。代价自知: Facebook/Instagram/WhatsApp 共用的
+#  fbcdn.net、facebook.com 等也会跟着走 Muse 组选定的节点。
 payload:
-  # api.meta.ai 是 Meta Model API 官方地址, 服务 Muse Spark 模型;
-  # DOMAIN-SUFFIX 覆盖 www/api/dev.meta.ai 等全部子域
+  # ===== 1. Muse 本体 =====
+  # muse.ai 含 api.muse.ai 等全部子域
+  - DOMAIN-SUFFIX,muse.ai
+
+  # ===== 2. Meta AI 本体 =====
+  # meta.ai 含 api.meta.ai (Meta Model API 官方地址, 服务 Muse Spark 模型)、agent.meta.ai 等全部子域
   - DOMAIN-SUFFIX,meta.ai
   - DOMAIN-SUFFIX,metaaivm.com
   - DOMAIN-SUFFIX,metaaiusercontent.com
-  # Muse 本体, 含 api.muse.ai 等全部子域
-  - DOMAIN-SUFFIX,muse.ai
+
+  # ===== 3. meta.com 整段 =====
+  # 覆盖 ai.meta.com、llama.meta.com、imagine.meta.com、developer(s).meta.com、accounts.meta.com 等全部子域
+  - DOMAIN-SUFFIX,meta.com
+
+  # ===== 4. Llama 生态 =====
+  - DOMAIN-SUFFIX,llama.com
+  - DOMAIN-SUFFIX,llamameta.net
+  - DOMAIN-SUFFIX,atmeta.com
+
+  # ===== 5. Facebook 系共用域名 (登录 + CDN, 整段收录) =====
+  # facebook.com 覆盖 graph.facebook.com (登录/API)、www/m 等全部子域
+  - DOMAIN-SUFFIX,facebook.com
+  - DOMAIN-SUFFIX,facebook.net
+  # fbcdn.net 覆盖 scontent.* 等图片/媒体 CDN 子域
+  - DOMAIN-SUFFIX,fbcdn.net
+  - DOMAIN-SUFFIX,fbsbx.com
+  - DOMAIN-SUFFIX,fb.com
+  - DOMAIN-SUFFIX,fb.me
+  - DOMAIN-SUFFIX,fb.watch
+  - DOMAIN-SUFFIX,facebookmail.com
