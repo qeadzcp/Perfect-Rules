@@ -1,7 +1,10 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v1.0
+  // FlClash / Mihomo Perfect-Rules v2.0 (qeadzcp fork)
+  // v2.0 changes: Muse/Meta AI group, Ads REJECT, Disney+, Steam download direct,
+  // Crypto group, region-detection fixes (GB/UK boundary, DE/FR/AU), DNS respect-rules,
+  // Telegram GEOIP, AI/Muse groups prefer US nodes. See README section v2.0.
   //
   // Architecture:
   //
@@ -64,6 +67,8 @@ const main = (config) => {
 
     "enable": true,
 
+    "respect-rules": true,
+
     "listen": "0.0.0.0:53",
 
     "prefer-h3": false,
@@ -97,7 +102,11 @@ const main = (config) => {
 
       "www.msftconnecttest.com",
 
-      "www.msftncsi.com"
+      "www.msftncsi.com",
+
+      "stun.*",
+      "+.stun.*",
+      "localhost.ptlogin2.qq.com"
     ],
 
     "default-nameserver": [
@@ -122,6 +131,16 @@ const main = (config) => {
         "https://doh.pub/dns-query"
       ],
 
+      "+.muse.ai": [
+        "https://cloudflare-dns.com/dns-query",
+        "https://dns.google/dns-query"
+      ],
+
+      "+.meta.ai": [
+        "https://cloudflare-dns.com/dns-query",
+        "https://dns.google/dns-query"
+      ],
+
       "geolocation-!cn": [
         "https://cloudflare-dns.com/dns-query",
         "https://dns.google/dns-query"
@@ -130,8 +149,8 @@ const main = (config) => {
     },
 
     "proxy-server-nameserver": [
-      "https://dns.alidns.com/dns-query",
-      "https://doh.pub/dns-query"
+      "https://cloudflare-dns.com/dns-query",
+      "https://dns.google/dns-query"
     ],
 
     "direct-nameserver": [
@@ -163,7 +182,11 @@ const main = (config) => {
         "+.openai.com",
         "+.chatgpt.com",
         "+.anthropic.com",
-        "+.claude.ai"
+        "+.claude.ai",
+        "+.muse.ai",
+        "+.meta.ai",
+        "+.meta.com",
+        "+.llama.com"
       ]
 
     }
@@ -189,7 +212,7 @@ const main = (config) => {
 
     "auto-route": true,
 
-    "auto-detect-interface": false,
+    "auto-detect-interface": true,
 
     "strict-route": true,
 
@@ -305,7 +328,7 @@ const main = (config) => {
   // ================================================================
 
   const iconBaseURL =
-    "https://cdn.jsdelivr.net/gh/n0de-sudo/Perfect-Rules@main/Clash/icons/";
+    "https://cdn.jsdelivr.net/gh/qeadzcp/Perfect-Rules@main/Clash/icons/";
 
 
   const groupIcons = {
@@ -323,6 +346,16 @@ const main = (config) => {
     "GitHub": "GitHub.png",
 
     "网络检测": "Network-test.png",
+
+    "Muse": "AI.png",
+
+    "Disney+": "Other.png",
+
+    "广告拦截": "Other.png",
+
+    "Steam下载": "China.png",
+
+    "加密货币": "Other.png",
 
     "Netflix": "Netflix.png",
 
@@ -353,6 +386,12 @@ const main = (config) => {
     "加拿大": "Other.png",
 
     "英国": "Other.png",
+
+    "德国": "Other.png",
+
+    "法国": "Other.png",
+
+    "澳大利亚": "Other.png",
 
     "其他地区": "Other.png"
 
@@ -390,6 +429,16 @@ const main = (config) => {
 
     "网络检测": true,
 
+    "Muse": true,
+
+    "Disney+": true,
+
+    "广告拦截": true,
+
+    "Steam下载": true,
+
+    "加密货币": true,
+
     "Netflix": true,
 
     "Spotify": true,
@@ -419,6 +468,12 @@ const main = (config) => {
     "加拿大": true,
 
     "英国": true,
+
+    "德国": true,
+
+    "法国": true,
+
+    "澳大利亚": true,
 
     "其他地区": true
 
@@ -467,6 +522,7 @@ const main = (config) => {
       /gemini/i,
 
       /netflix/i,
+      /muse/i,
       /disney/i,
       /disney\+/i,
 
@@ -868,7 +924,7 @@ const main = (config) => {
   // ================================================================
 
   const ruleBaseURL =
-    "https://cdn.jsdelivr.net/gh/n0de-sudo/Perfect-Rules@main/Clash/rules/";
+    "https://cdn.jsdelivr.net/gh/qeadzcp/Perfect-Rules@main/Clash/rules/";
 
 
   // ================================================================
@@ -936,7 +992,22 @@ const main = (config) => {
       createRuleProvider("microsoft.yaml"),
 
     "NetworkTest":
-      createRuleProvider("network-test.yaml")
+      createRuleProvider("network-test.yaml"),
+
+    "Muse":
+      createRuleProvider("muse.yaml"),
+
+    "Disney":
+      createRuleProvider("disney.yaml"),
+
+    "Ads":
+      createRuleProvider("ads.yaml"),
+
+    "SteamDownload":
+      createRuleProvider("Steam_Download.yaml"),
+
+    "Crypto":
+      createRuleProvider("crypto.yaml")
 
   };
 
@@ -1045,11 +1116,48 @@ const main = (config) => {
     "英国": [
 
       /英国/i,
-      /UK/i,
+      /\bUK\b/i,
+      /\bGB\b/i,
       /United\s*Kingdom/i,
+      /Great\s*Britain/i,
       /England/i,
       /London/i,
       /Manchester/i
+
+    ],
+
+
+    "德国": [
+
+      /德国/i,
+      /\bDE\b/i,
+      /Germany/i,
+      /Deutschland/i,
+      /Frankfurt/i,
+      /Berlin/i,
+      /Munich/i
+
+    ],
+
+
+    "法国": [
+
+      /法国/i,
+      /\bFR\b/i,
+      /France/i,
+      /Paris/i
+
+    ],
+
+
+    "澳大利亚": [
+
+      /澳大利亚/i,
+      /澳洲/i,
+      /\bAU\b/i,
+      /Australia/i,
+      /Sydney/i,
+      /Melbourne/i
 
     ]
 
@@ -1112,6 +1220,12 @@ const main = (config) => {
 
     "英国": [],
 
+    "德国": [],
+
+    "法国": [],
+
+    "澳大利亚": [],
+
     "其他地区": []
 
   };
@@ -1156,6 +1270,12 @@ const main = (config) => {
     "加拿大",
 
     "英国",
+
+    "德国",
+
+    "法国",
+
+    "澳大利亚",
 
     "其他地区"
 
@@ -1294,7 +1414,22 @@ const main = (config) => {
   // 28. Service groups
   // ================================================================
 
-  function createBusinessGroup(name) {
+  function createBusinessGroup(name, preferRegions) {
+
+    let orderedRegions = availableRegions.slice();
+
+    if (Array.isArray(preferRegions)) {
+
+      orderedRegions.sort((a, b) => {
+
+        const ia = preferRegions.indexOf(a);
+        const ib = preferRegions.indexOf(b);
+
+        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+
+      });
+
+    }
 
     const group = {
 
@@ -1303,7 +1438,7 @@ const main = (config) => {
       "type": "select",
 
       "proxies":
-        availableRegions.concat([
+        orderedRegions.concat([
           "国内直连"
         ])
 
@@ -1324,9 +1459,37 @@ const main = (config) => {
   }
 
 
+  const adsGroup = {
+
+    "name": "广告拦截",
+
+    "type": "select",
+
+    "proxies": ["REJECT", "DIRECT", "一键代理"],
+
+    "icon": getGroupIcon("广告拦截")
+
+  };
+
+
+  const steamDownloadGroup = {
+
+    "name": "Steam下载",
+
+    "type": "select",
+
+    "proxies": ["国内直连"].concat(availableRegions),
+
+    "icon": getGroupIcon("Steam下载")
+
+  };
+
+
   const businessGroups = [
 
-    createBusinessGroup("AI"),
+    createBusinessGroup("Muse", ["美国", "新加坡", "日本", "英国", "加拿大"]),
+
+    createBusinessGroup("AI", ["美国", "新加坡", "日本", "英国", "加拿大"]),
 
     createBusinessGroup("YouTube"),
 
@@ -1335,6 +1498,10 @@ const main = (config) => {
     createBusinessGroup("GitHub"),
 
     createBusinessGroup("Netflix"),
+
+    createBusinessGroup("Disney+"),
+
+    createBusinessGroup("加密货币"),
 
     createBusinessGroup("Spotify"),
 
@@ -1373,6 +1540,8 @@ const main = (config) => {
     finalPreservedGroups
 
       .concat(businessGroups)
+
+      .concat([adsGroup, steamDownloadGroup])
 
       .concat(regionGroups)
 
@@ -1432,10 +1601,24 @@ const main = (config) => {
 
 
     // --------------------------------------------------------------
+    // Ads (was in repo but never wired in v1.0)
+    // --------------------------------------------------------------
+
+    "RULE-SET,Ads,广告拦截",
+
+
+    // --------------------------------------------------------------
     // Network Test
     // --------------------------------------------------------------
 
     "RULE-SET,NetworkTest,网络检测",
+
+
+    // --------------------------------------------------------------
+    // Muse / Meta AI (must be before generic AI)
+    // --------------------------------------------------------------
+
+    "RULE-SET,Muse,Muse",
 
 
     // --------------------------------------------------------------
@@ -1472,6 +1655,8 @@ const main = (config) => {
 
     "RULE-SET,Netflix,Netflix",
 
+    "RULE-SET,Disney,Disney+",
+
 
     // --------------------------------------------------------------
     // Spotify
@@ -1484,6 +1669,8 @@ const main = (config) => {
     // Steam
     // --------------------------------------------------------------
 
+    "RULE-SET,SteamDownload,Steam下载",
+
     "RULE-SET,Steam,Steam",
 
 
@@ -1492,6 +1679,8 @@ const main = (config) => {
     // --------------------------------------------------------------
 
     "RULE-SET,Telegram,Telegram",
+
+    "GEOIP,telegram,Telegram,no-resolve",
 
 
     // --------------------------------------------------------------
@@ -1513,6 +1702,8 @@ const main = (config) => {
     // --------------------------------------------------------------
 
     "RULE-SET,Microsoft,Microsoft",
+
+    "RULE-SET,Crypto,加密货币",
 
 
     // --------------------------------------------------------------

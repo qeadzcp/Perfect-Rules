@@ -1,3 +1,25 @@
+# Perfect Rules (qeadzcp fork, v2.0)
+
+> 本仓库 Fork 自 [n0de-sudo/Perfect-Rules](https://github.com/n0de-sudo/Perfect-Rules),在此基础上维护。
+> FlClash 覆写脚本地址 (直接用这个):
+> `https://raw.githubusercontent.com/qeadzcp/Perfect-Rules/refs/heads/main/Clash/FlClash.js`
+
+## v2.0 改动 (2026-11-24)
+
+1. **新增 Muse 专组**: 新建 `Clash/rules/muse.yaml`, 只收已核实的 4 条后缀: `meta.ai`、`metaaivm.com`、`metaaiusercontent.com`、`muse.ai`。注意: 这几条其实已在原 `category-ai-!cn` 的 Meta 小节里, 本组是「独立成组」——规则排在通用 AI 组之前 (否则 first-match 永远命中不了), 以后能给 Muse 单独选节点 (比如固定美国节点、避开香港)。meta.com 系、facebook.com、fbcdn.net 等暂未收录, 需用 FlClash 连接记录核对 Muse App 实际命中的域名后再补, 不要整段照抄 (那是 Facebook/Instagram/WhatsApp 共用的)。来源: v2fly domain-list-community 的 meta 清单、VPSDance/ai-proxy-rules 的 meta-ai provider。
+2. **广告拦截真正生效**: 原仓库有 `ads.yaml` 但脚本从未引用, v2.0 接入「广告拦截」组 (默认 REJECT)。
+3. **Disney+ / 加密货币组**: 同样是仓库里有规则文件却没接线的, 现已接入。
+4. **Steam 下载直连**: 新增「Steam下载」组默认国内直连, 游戏下载不耗代理流量; Steam 商店/社区仍走 Steam 组。
+5. **地区识别修复**: 英国 `/UK/` 无边界会把 Ukraine 误判英国, 改为 `\bUK\b` 并补 `\bGB\b`; 新增德国/法国/澳大利亚地区组。
+6. **Telegram 补 GEOIP**: 原规则只有域名, App 直连 IP 时漏分流, 已补 `GEOIP,telegram`。
+7. **DNS**: 开启 `respect-rules`; Muse/Meta 域名加入 fallback 名单与 DNS 策略 (走国外加密 DNS); fake-ip-filter 补 STUN 与微信登录域名。
+8. **TUN**: `auto-detect-interface` 改为 true, 切换 WiFi/流量后不再断流。
+9. **DNS**: `proxy-server-nameserver` 由 AliDNS 改为 Cloudflare/Google DoH, 解析机场订阅/代理服务器域名更稳 (国内域名解析不受影响)。
+
+未接线说明: `Clash/rules/software.yaml` 是进程名规则 (Discord/Steam 等进程), 各进程目标组不同, 无法统一成一个规则集, 保持原样未接入。
+
+---
+
 # **Perfect Rules**
 ## ✈️推荐机场
 [点击：九云机场8折优惠](https://n0de.jiuyyq.com)
