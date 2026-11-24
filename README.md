@@ -1,244 +1,62 @@
-# Perfect Rules (qeadzcp fork, v2.2)
+# Perfect-Rules 分流规则（自用维护版）
 
-> 本仓库 Fork 自 [n0de-sudo/Perfect-Rules](https://github.com/n0de-sudo/Perfect-Rules),在此基础上维护。
-> FlClash 覆写脚本地址 (直接用这个):
-> `https://raw.githubusercontent.com/qeadzcp/Perfect-Rules/refs/heads/main/Clash/FlClash.js`
+一套自己维护的分流规则，两个版本共用同一套分流逻辑：**FlClash / Mihomo 版**（JS 覆写脚本）和 **Quantumult X（圈X）版**（配置文件）。核心特点：
 
-## Quantumult X (圈X) 版
-
-圈X 不能直接用 FlClash 的 JS 脚本, 这里是同一套逻辑的圈X移植版: `QuantumultX/QuantumultX.conf`
-导入地址: `https://raw.githubusercontent.com/qeadzcp/Perfect-Rules/refs/heads/main/QuantumultX/QuantumultX.conf`
-用法: 圈X → 设置 → 下载配置, 粘贴上面地址; 然后在「引用资源 - 节点」里添加机场订阅 (或编辑配置文件 [server_remote] 段填入订阅地址)。
-地区组按节点名自动匹配; 大规则集引用 blackmatrix7 圈X规则库; Muse 规则在 `QuantumultX/rules/muse.list`。
-注意: 圈X 不支持 hysteria2 协议, 机场的 hy2 节点 (该机场共 66 个) 在圈X里不可用, 能用的是 vless/trojan 等节点 (该机场 27 个)。
-
-## v2.0 改动 (2026-11-24)
-
-1. **新增 Muse 专组**: 新建 `Clash/rules/muse.yaml`。v2.1 起按「宁错杀不放过」全量收录 (2026-11-24 用户定): muse.ai、meta.ai、metaaivm.com、metaaiusercontent.com、meta.com 整段、llama.com、llamameta.net、atmeta.com, 以及 Facebook 系共用域名 facebook.com / facebook.net / fbcdn.net / fbsbx.com / fb.com / fb.me / fb.watch / facebookmail.com。规则排在通用 AI 组之前 (否则 first-match 永远命中不了), Muse 组默认优先美国节点。注意代价: fbcdn/facebook 与 Instagram/WhatsApp 共用, 也会跟着走 Muse 组的节点。来源: v2fly domain-list-community 的 meta 清单、VPSDance/ai-proxy-rules 的 meta-ai provider。
-2. **广告拦截真正生效**: 原仓库有 `ads.yaml` 但脚本从未引用, v2.0 接入「广告拦截」组 (默认 REJECT)。
-3. **Disney+ / 加密货币组**: 同样是仓库里有规则文件却没接线的, 现已接入。
-4. **Steam 下载直连**: 新增「Steam下载」组默认国内直连, 游戏下载不耗代理流量; Steam 商店/社区仍走 Steam 组。
-5. **地区识别修复**: 英国 `/UK/` 无边界会把 Ukraine 误判英国, 改为 `\bUK\b` 并补 `\bGB\b`; 新增德国/法国/澳大利亚地区组。
-6. **Telegram 补 GEOIP**: 原规则只有域名, App 直连 IP 时漏分流, 已补 `GEOIP,telegram`。
-7. **DNS**: 开启 `respect-rules`; Muse/Meta 域名加入 fallback 名单与 DNS 策略 (走国外加密 DNS); fake-ip-filter 补 STUN 与微信登录域名。
-8. **TUN**: `auto-detect-interface` 改为 true, 切换 WiFi/流量后不再断流。
-9. ~~**DNS**: `proxy-server-nameserver` 改国外 DoH~~ **v2.2 已撤销**: 节点域名必须在代理连上之前用国内 DNS 解析, 国外 DoH 直连不通会导致全部节点测速失败。v2.2 起 DNS/TUN 引导设置全部恢复 v1 已验证值 (含撤掉 respect-rules、auto-detect-interface 改回 false), 只保留分组与规则层面的新增。
-
-未接线说明: `Clash/rules/software.yaml` 是进程名规则 (Discord/Steam 等进程), 各进程目标组不同, 无法统一成一个规则集, 保持原样未接入。
+- 独立的 **Muse 分组**：Muse / Meta AI 及 Meta、Facebook 系域名单独成组，默认优先走美国节点，与通用 AI 分组分开
+- **广告拦截**分组：默认拦截（REJECT），可在分组卡片里一键切换放行
+- **地区自动分组**：香港、台湾、日本、新加坡、韩国、美国、加拿大、英国、德国、法国、澳大利亚、其他地区，按节点名自动匹配、自动测速，不用手动整理节点
+- 常见服务独立分组：AI、YouTube、Google、GitHub、Netflix、Disney+、Spotify、Steam（含下载直连）、Telegram、TikTok、Apple、Microsoft、加密货币、网络检测
+- 国内域名与国内 IP 直连，其余走「一键代理」兜底；DNS 用 Fake-IP + 国内 DoH 解析节点域名，防污染防泄露
 
 ---
 
-# **Perfect Rules**
-## ✈️推荐机场
-[点击：九云机场8折优惠](https://n0de.jiuyyq.com)
-专属优惠码：TowpY74S
-- 高性能海外机场，海外团队，无跑路风险
-- 集群负载均衡设计，高速专线，极低延迟，无视晚高峰，4K 秒开
-- ⭐19.9元 500G，中秋限时优惠⭐
-- ⭐29.9元1000G，中秋显示优惠⭐
-- 优惠套餐每月仅需 6 元，150G 流量，年付 8 折
-- 解锁流媒体及 ChatGPT
+## FlClash / Mihomo 版
 
-**阿尔忒弥斯实验室维护的代理分流配置方案。**
+在 FlClash 里添加覆写脚本，地址二选一（内容相同，哪个快用哪个）：
 
-## **🚀 快速开始**
+- GitHub 原始地址：`https://raw.githubusercontent.com/qeadzcp/Perfect-Rules/refs/heads/main/Clash/FlClash.js`
+- jsdelivr 镜像：`https://cdn.jsdelivr.net/gh/qeadzcp/Perfect-Rules@main/Clash/FlClash.js`
 
-如果你是第一次使用 Perfect Rules，建议按照以下顺序选择：
+使用方法：FlClash → 配置 → 覆写脚本，粘贴上面地址，应用到你的订阅配置即可。脚本会自动生成全部分组和规则，订阅更新后自动重新应用。
 
-**① Clash Mi → ② Clash / Mihomo → ③ V2rayN**
+规则文件在 `Clash/rules/` 目录，Muse 分组规则是 `Clash/rules/muse.yaml`。
 
-| **支持客户端** | **版本** | **客户端** | **功能**              | **配置文件**                                              | **使用方式**             | **教程视频**                 |
-| -------------- | -------- | ---------- | --------------------- | --------------------------------------------------------- | ------------------------ | ---------------------------- |
-| Shadowrocket   | 3.0      | 苹果端     | 完美分流/DNS防泄露    | [`perfect_rules.conf`](./Shadowrocket/perfect_rules.conf) | 一键导入                 | https://youtu.be/zppJJyy6BYo |
-| FlClash        | 3.0      | 全平台     | 完美分流/DNS防泄露    | [`FlClash.js`](./Clash/FlClash.js)                        | 一键导入                 | https://youtu.be/7RXy43TpjTs |
-| **Clash Mi**   | 3.0      | 全平台     | 完美分流 / DNS 防泄漏 | [`Clash_mi.js`](./Clash/Clash_mi.js)                      | 一键导入                 | https://youtu.be/jmJiyDSmZE0 |
-| Clash / Mihomo | 3.0      | PC         | 完美分流 / DNS 防泄漏 | [`Clash_merge.yaml`](./Clash/Clash_merge.yaml)            | 复制粘贴（见下方）       | https://youtu.be/2A2SdHP_NKA |
-| V2rayN         | 2.0      | PC         | 完美分流              | [`V2rayN.json`](./V2rayN.json)                            | 下载文件后配置（见下方） | https://youtu.be/eaTmKWPyVG4 |
+## Quantumult X（圈X）版
 
-**推荐：** 如果你希望在**不同设备上使用统一的**分流规则，并同时解决 DNS 泄漏问题，可以优先选择 **Clash Mi 3.0**。
+在圈X里下载配置，地址二选一（推荐用 jsdelivr 的，GitHub 原始地址偶尔有缓存延迟，会下到旧版）：
 
-------
+- jsdelivr 镜像（推荐）：`https://cdn.jsdelivr.net/gh/qeadzcp/Perfect-Rules@main/QuantumultX/QuantumultX.conf`
+- GitHub 原始地址：`https://raw.githubusercontent.com/qeadzcp/Perfect-Rules/refs/heads/main/QuantumultX/QuantumultX.conf`
 
-## Shadowrocket 3.0 ：完美分流 + DNS防泄漏 ——一键配置
+使用方法：圈X → 设置 → 下载配置，粘贴上面地址；然后在「设置 → 引用资源 → 节点」里添加你自己的机场订阅，地区组会自动匹配节点。
 
-macOS和iOS端的Shadowrocket可以使用项目提供的[`perfect_rules.conf`](./Shadowrocket/perfect_rules.conf)，一键导入即可使用。
+注意：
 
-#### **远程配置地址**
+- 圈X 不支持 hysteria2 协议，机场里的 hy2 节点在圈X中不可用，属协议限制，与配置无关
+- 圈X 的大规则集（广告、YouTube、Netflix、国内直连等）引用 blackmatrix7 的圈X格式规则库自动更新；Muse 规则在本仓库 `QuantumultX/rules/muse.list`
 
-**GitHub Raw：**
+---
 
-```text
-https://github.com/n0de-sudo/Perfect-Rules/raw/refs/heads/main/Shadowrocket/perfect_rules.conf
-```
+## 分流顺序说明
 
-## **① ⭐ Clash Mi 3.0：完美分流 + DNS 防泄漏——懒人版**
+规则从上到下逐条匹配，命中第一条即停，本规则的顺序是：
 
-## FlClash 3.0：完美分流 + DNS防泄漏——一键配置
+1. 局域网 / 内网 → 直连
+2. 广告拦截
+3. Muse、AI、YouTube 等具体服务分组（先具体）
+4. 国内域名 / 国内 IP → 国内直连（后大类）
+5. 其余全部 → 一键代理（兜底）
 
-FlClash 用户可以使用项目提供的[`FlClash.js`](./Clash/FlClash.js)，一键导入完整的 Perfect Rules 配置。
+国内直连故意放在靠后位置：它的范围太大（几万个国内域名 + 全部中国 IP 段），放前面会把带国内 CDN 的海外服务误判直连。具体服务先各自认领，剩下的再过国内这道筛子。
 
-目前FlClash支持多平台（仅iOS不支持），并采用统一的配置逻辑。
+## 常见问题
 
-### **使用方法**
+- **某个 App 被广告拦截误伤打不开**：把「广告拦截」分组切到 DIRECT 或一键代理即可放行
+- **图标显示成字母占位**：是手机端没拉到图标图，清一下 App 缓存或删掉配置重新导入
+- **跟 Muse 聊天走哪个节点**：走 Muse 分组 → 美国组自动测速选最快的节点；想固定节点，在 Muse 分组里手动选一个地区组或具体节点
 
-第一步：打开项目中的[`FlClash.js`](./Clash/FlClash.js)，获取脚本的RAW地址。
+## 版本记录
 
-第二步：打开 FlClash，导入路径为：
-```
-工具 → 进阶配置 → 脚本 → 右上角“添加” → 外部获取 → 通过URL导入，粘贴下方的RAW地址 → 重命名 → 保存
-```
-第三步：在配置中设置覆写，点选刚刚导入的脚本。
-
-#### **远程配置地址**
-
-**GitHub Raw：**
-
-```text
-https://github.com/n0de-sudo/Perfect-Rules/blob/main/Clash/FlClash.js
-```
-
-
-## **① ⭐ Clash Mi 3.0：完美分流 + DNS 防泄漏——懒人版**
-
-Clash Mi 用户可以使用项目提供的 `clash_mi.js`，一键导入完整的 Perfect Rules 配置。
-
-Clash Mi 支持多平台，并采用统一的配置逻辑。
- 如果希望在不同设备上使用一致的分流规则和 DNS 防泄漏方案，并且不想折腾，推荐优先使用 Clash Mi 版本。
-
-该脚本包含：
-
-+ 分流规则
-  + 🇨🇳 国内网站直连
-  + 🌍 海外网站代理
-  + 🤖 AI 服务专用代理组
-  + ▶️ YouTube 专用代理组
-  + 🚫 广告 / 追踪拦截
-  + 🏠 局域网直连
-+ 🔐 DNS 防泄漏
-+ 🌐 Fake-IP / DNS Hijack 等相关配置
-+ 🌍 根据机场节点动态生成地区代理组
-
-### **使用方法**
-
-**第一步：** 打开项目中的 [`Clash_mi.js`](./Clash/Clash_mi.js)。
-
-**第二步：** 获取脚本的 Raw 地址。
-
-**第三步：** 打开 Clash Mi：
-
-```
-核心设置 → 覆写 → 右上角 + → 添加配置链接
-```
-
-选择 `JS` 类型，粘贴 `clash_mi.js` 的远程地址并保存。
-
-#### **远程配置地址**
-
-**GitHub Raw：**
-
-```text
-https://raw.githubusercontent.com/n0de-sudo/Perfect-Rules/main/Clash/Clash_mi.js
-```
-
-⚠️ **重要：**
- 添加远程 JS 后，请务必将 `clash_mi.js` 的覆写方式修改为 **「内置-覆写」**，否则脚本可能无法按照预期生效。
-
-**第四步：** 关闭并重新打开代理连接，使配置生效。
-
-**第五步：** 在 Clash Mi 的面板中检查代理组和分流规则，根据自己的机场节点选择默认代理。
-
-**注意：** Clash Mi 的部分版本在导入远程 JS 后，会接管部分覆写配置，这是正常现象。
-
-------
-
-## **② ⭐ Clash / Mihomo 完美分流 3.0**
-
-Clash / Mihomo 用户可以使用最新的 **Perfect Rules 3.0**。
-
-核心配置已经整理完成，你不需要自己修改，复制粘贴即可使用。如需新增规则，请提交 Issue。
-
-### **使用方法**
-
-**第一步：** 打开并复制 [`Clash_merge.yaml`](./Clash/Clash_merge.yaml) 的全量代码。
-
-**第二步：** 以 Clash Verge 为例，找到订阅选项卡，双击「全局覆写扩展配置」，粘贴代码并点击保存，完美分流规则即可生效。
-
-**第三步：** 选择你的代理节点，微调代理组即可使用。
-
-------
-
-## **③ ⭐ V2rayN 完美分流 2.0****（3.0 版本敬请期待）**
-
-V2rayN 用户目前使用的是完美分流 2.0 版本。下载配置后，需要手动创建代理组和分流规则。
-
-### **使用方法**
-
-**第一步：** 下载项目中的 [`V2rayN.json`](./V2rayN.json) 配置文件。
-
-**第二步：** 打开 V2rayN 👉 设置 👉 路由设置 👉 添加规则集 👉 从文件中导入规则 👉 选择刚刚下载的 `V2rayN.json` 文件。
-
-**第三步：** 按需创建自己的专用代理组 / 专用分流规则（根据视频教程），配置好之后即可使用。
-
-------
-
-## **🧩 分流内容**
-
-Perfect Rules 已经针对常见使用场景进行了分类：
-
-+ 🇨🇳 国内网站 → **DIRECT**
-+ 🌍 海外网站 → **代理**
-+ 🤖 AI 服务 → **AI 专用策略**
-+ ▶️ YouTube → **YouTube 专用策略**
-+ 🚫 广告 / 追踪 → **REJECT**
-+ 🏠 局域网 → **DIRECT**
-
-规则会持续更新和优化。
-
-------
-
-## **📺 视频教程**
-
-本项目相关配置会在 **阿尔忒弥斯实验室** YouTube 频道进行详细演示。
-
-[**阿尔忒弥斯实验室 · Artemis Lab**](https://www.youtube.com/@ArtemisLab_Tech)
-
-------
-
-## **⭐ 支持项目**
-
-如果 **Perfect Rules** 对你有帮助，欢迎给项目一个 ⭐ Star。
-
-也欢迎提交 Issue 或 Pull Request，共同完善规则。
-
-------
-
-## **🔄 更新说明**
-
-Perfect Rules 会持续维护。
-
-主要更新内容：
-
-+ 新增网站及服务
-+ 新增 AI 域名
-+ 优化分流规则
-+ 修复错误分流
-+ 更新 Clash / Mihomo 配置
-+ 根据实际使用反馈调整规则
-
-如果发现规则存在问题，欢迎提交 Issue。
-
-------
-
-## **⚠️ 免责声明**
-
-本项目仅用于网络技术研究、学习以及配置交流。
-
-请遵守所在地法律法规以及相关软件、网络服务的平台规则。
-
-------
-
-**Perfect Rules**
-
-*Make complex routing simple.*
-
-**阿尔忒弥斯实验室 · Artemis Lab**
+- FlClash 版 v2.6（2026-11-24）：补齐 Muse / 广告 / Disney+ / 加密货币等分组与图标，广告拦截卡片置于 Muse 之前，Disney 图标改用无特殊字符的文件名
+- FlClash 版 v2.2（2026-11-24）：DNS 引导项恢复为已验证可用的国内 DoH（教训：节点域名必须先用国内 DNS 解析，改成国外 DoH 会导致全部节点连不上）
+- 圈X 版 v1.3（2026-11-24）：移植 FlClash 版同一套分流逻辑，补齐圈X要求的全部配置段
