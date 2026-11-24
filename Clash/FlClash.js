@@ -1,7 +1,8 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v2.4 (qeadzcp fork)
+  // FlClash / Mihomo Perfect-Rules v2.5 (qeadzcp fork)
+  // v2.5: Ads group card moved before Muse in the group list (display order only, rules unchanged).
   // v2.4: Disney+ dedicated icon.
   // v2.3: dedicated icons for Muse (robot), Crypto, Ads (reject),
   // Other regions (globe), and real flags for DE/GB/FR/AU via flagcdn.
@@ -1540,9 +1541,11 @@ const main = (config) => {
 
     finalPreservedGroups
 
+      .concat([adsGroup])
+
       .concat(businessGroups)
 
-      .concat([adsGroup, steamDownloadGroup])
+      .concat([steamDownloadGroup])
 
       .concat(regionGroups)
 
