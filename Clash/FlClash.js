@@ -1,7 +1,8 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v2.3 (qeadzcp fork)
+  // FlClash / Mihomo Perfect-Rules v2.4 (qeadzcp fork)
+  // v2.4: Disney+ dedicated icon.
   // v2.3: dedicated icons for Muse (robot), Crypto, Ads (reject),
   // Other regions (globe), and real flags for DE/GB/FR/AU via flagcdn.
   // v2.2 hotfix: DNS/TUN bootstrap settings restored to v1 verified values
@@ -343,7 +344,7 @@ const main = (config) => {
 
     "Muse": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png",
 
-    "Disney+": "Other.png",
+    "Disney+": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Disney+.png",
 
     "广告拦截": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Reject.png",
 
