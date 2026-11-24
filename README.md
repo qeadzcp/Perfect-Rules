@@ -57,6 +57,7 @@
 
 ## 版本记录
 
+- FlClash 版 v2.9（2026-11-24）：fake-ip-filter 再补播放/封面用的 CDN 域名（hersav.me 和 vc* 轮换 CDN 池）——v2.7/v2.8 只放行了站点域名，开 VPN 时列表能出但视频拉不到，这次把播放链路也放行
 - FlClash 版 v2.8（2026-11-24）：fake-ip-filter 补上 rou66.net / hsex02.net / huangguo04.net（i短剧的肉视频、好色TV、黄果国产插件同 v2.7 的原因）
 - FlClash 版 v2.7（2026-11-24）：fake-ip-filter 加入 321av.art / 321av.fans——i短剧的插件防护会拦截解析到内网地址的域名，而假 IP 池 172.19 段属于内网，开 VPN 时插件会被误拦，这两个域名改走真实解析
 - FlClash 版 v2.6（2026-11-24）：补齐 Muse / 广告 / Disney+ / 加密货币等分组与图标，广告拦截卡片置于 Muse 之前，Disney 图标改用无特殊字符的文件名

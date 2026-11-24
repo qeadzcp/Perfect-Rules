@@ -1,7 +1,10 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v2.8 (qeadzcp fork)
+  // FlClash / Mihomo Perfect-Rules v2.9 (qeadzcp fork)
+  // v2.9: fake-ip-filter also covers the plugins' stream/cover CDN domains
+  // (hersav.me + the rotating vc* CDN pool). v2.7/v2.8 only whitelisted the
+  // site domains, so lists loaded with VPN on but playback was still blocked.
   // v2.8: fake-ip-filter also covers rou66.net / hsex02.net / huangguo04.net
   // (the other iDuanJu plugins for 肉视频 / 好色TV / 黄果国产, same reason as v2.7).
   // v2.7: 321av.art / 321av.fans added to fake-ip-filter - iDuanJu's plugin
@@ -100,8 +103,21 @@ const main = (config) => {
       "+.321av.art",
       "+.321av.fans",
       "+.rou66.net",
+      "+.rou666.net",
       "+.hsex02.net",
       "+.huangguo04.net",
+
+      "+.hersav.me",
+      "+.vcwinford.cc",
+      "+.vcecwind.top",
+      "+.vclaapp.sbs",
+      "+.vcsheaye.cc",
+      "+.vcmathe.com",
+      "+.vcjudch73.com",
+      "+.vcfr393.mom",
+      "+.vcwaloom.sbs",
+      "+.vcheetah.mom",
+      "+.vcislqhao.sbs",
 
       "time.*.com",
       "time.*.gov",
