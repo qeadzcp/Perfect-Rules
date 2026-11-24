@@ -4,6 +4,14 @@
 > FlClash 覆写脚本地址 (直接用这个):
 > `https://raw.githubusercontent.com/qeadzcp/Perfect-Rules/refs/heads/main/Clash/FlClash.js`
 
+## Quantumult X (圈X) 版
+
+圈X 不能直接用 FlClash 的 JS 脚本, 这里是同一套逻辑的圈X移植版: `QuantumultX/QuantumultX.conf`
+导入地址: `https://raw.githubusercontent.com/qeadzcp/Perfect-Rules/refs/heads/main/QuantumultX/QuantumultX.conf`
+用法: 圈X → 设置 → 下载配置, 粘贴上面地址; 然后在「引用资源 - 节点」里添加机场订阅 (或编辑配置文件 [server_remote] 段填入订阅地址)。
+地区组按节点名自动匹配; 大规则集引用 blackmatrix7 圈X规则库; Muse 规则在 `QuantumultX/rules/muse.list`。
+注意: 圈X 不支持 hysteria2 协议, 机场的 hy2 节点 (该机场共 66 个) 在圈X里不可用, 能用的是 vless/trojan 等节点 (该机场 27 个)。
+
 ## v2.0 改动 (2026-11-24)
 
 1. **新增 Muse 专组**: 新建 `Clash/rules/muse.yaml`。v2.1 起按「宁错杀不放过」全量收录 (2026-11-24 用户定): muse.ai、meta.ai、metaaivm.com、metaaiusercontent.com、meta.com 整段、llama.com、llamameta.net、atmeta.com, 以及 Facebook 系共用域名 facebook.com / facebook.net / fbcdn.net / fbsbx.com / fb.com / fb.me / fb.watch / facebookmail.com。规则排在通用 AI 组之前 (否则 first-match 永远命中不了), Muse 组默认优先美国节点。注意代价: fbcdn/facebook 与 Instagram/WhatsApp 共用, 也会跟着走 Muse 组的节点。来源: v2fly domain-list-community 的 meta 清单、VPSDance/ai-proxy-rules 的 meta-ai provider。

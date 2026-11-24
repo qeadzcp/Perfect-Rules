@@ -1,0 +1,18 @@
+# Muse / Meta AI 分流规则 (Quantumult X 格式, 与 Clash/rules/muse.yaml v2.1 全量版一致)
+# 维护: qeadzcp/Perfect-Rules
+HOST-SUFFIX,muse.ai,Muse
+HOST-SUFFIX,meta.ai,Muse
+HOST-SUFFIX,metaaivm.com,Muse
+HOST-SUFFIX,metaaiusercontent.com,Muse
+HOST-SUFFIX,meta.com,Muse
+HOST-SUFFIX,llama.com,Muse
+HOST-SUFFIX,llamameta.net,Muse
+HOST-SUFFIX,atmeta.com,Muse
+HOST-SUFFIX,facebook.com,Muse
+HOST-SUFFIX,facebook.net,Muse
+HOST-SUFFIX,fbcdn.net,Muse
+HOST-SUFFIX,fbsbx.com,Muse
+HOST-SUFFIX,fb.com,Muse
+HOST-SUFFIX,fb.me,Muse
+HOST-SUFFIX,fb.watch,Muse
+HOST-SUFFIX,facebookmail.com,Muse
