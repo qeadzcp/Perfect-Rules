@@ -1,7 +1,10 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v2.6 (qeadzcp fork)
+  // FlClash / Mihomo Perfect-Rules v2.7 (qeadzcp fork)
+  // v2.7: 321av.art / 321av.fans added to fake-ip-filter - iDuanJu's plugin
+  // guard blocks domains resolving to private IPs, and the fake-ip range
+  // (172.19.0.0/16) is private, so JS plugins were all rejected with VPN on.
   // v2.6: Disney icon switched to Disney.png (no "+" in URL - some Android image loaders turn "+" into a space and 404).
   // v2.5: Ads group card moved before Muse in the group list (display order only, rules unchanged).
   // v2.4: Disney+ dedicated icon.
@@ -91,6 +94,9 @@ const main = (config) => {
       "+.local",
       "+.localhost",
       "+.home.arpa",
+
+      "+.321av.art",
+      "+.321av.fans",
 
       "time.*.com",
       "time.*.gov",
