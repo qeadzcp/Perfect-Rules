@@ -1,7 +1,8 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v2.5 (qeadzcp fork)
+  // FlClash / Mihomo Perfect-Rules v2.6 (qeadzcp fork)
+  // v2.6: Disney icon switched to Disney.png (no "+" in URL - some Android image loaders turn "+" into a space and 404).
   // v2.5: Ads group card moved before Muse in the group list (display order only, rules unchanged).
   // v2.4: Disney+ dedicated icon.
   // v2.3: dedicated icons for Muse (robot), Crypto, Ads (reject),
@@ -345,7 +346,7 @@ const main = (config) => {
 
     "Muse": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png",
 
-    "Disney+": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Disney+.png",
+    "Disney+": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Disney.png",
 
     "广告拦截": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Reject.png",
 
