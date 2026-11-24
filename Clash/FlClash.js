@@ -1,7 +1,9 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v2.7 (qeadzcp fork)
+  // FlClash / Mihomo Perfect-Rules v2.8 (qeadzcp fork)
+  // v2.8: fake-ip-filter also covers rou66.net / hsex02.net / huangguo04.net
+  // (the other iDuanJu plugins for 肉视频 / 好色TV / 黄果国产, same reason as v2.7).
   // v2.7: 321av.art / 321av.fans added to fake-ip-filter - iDuanJu's plugin
   // guard blocks domains resolving to private IPs, and the fake-ip range
   // (172.19.0.0/16) is private, so JS plugins were all rejected with VPN on.
@@ -97,6 +99,9 @@ const main = (config) => {
 
       "+.321av.art",
       "+.321av.fans",
+      "+.rou66.net",
+      "+.hsex02.net",
+      "+.huangguo04.net",
 
       "time.*.com",
       "time.*.gov",
