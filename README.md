@@ -1,4 +1,4 @@
-# Perfect Rules (qeadzcp fork, v2.0)
+# Perfect Rules (qeadzcp fork, v2.2)
 
 > 本仓库 Fork 自 [n0de-sudo/Perfect-Rules](https://github.com/n0de-sudo/Perfect-Rules),在此基础上维护。
 > FlClash 覆写脚本地址 (直接用这个):
@@ -14,7 +14,7 @@
 6. **Telegram 补 GEOIP**: 原规则只有域名, App 直连 IP 时漏分流, 已补 `GEOIP,telegram`。
 7. **DNS**: 开启 `respect-rules`; Muse/Meta 域名加入 fallback 名单与 DNS 策略 (走国外加密 DNS); fake-ip-filter 补 STUN 与微信登录域名。
 8. **TUN**: `auto-detect-interface` 改为 true, 切换 WiFi/流量后不再断流。
-9. **DNS**: `proxy-server-nameserver` 由 AliDNS 改为 Cloudflare/Google DoH, 解析机场订阅/代理服务器域名更稳 (国内域名解析不受影响)。
+9. ~~**DNS**: `proxy-server-nameserver` 改国外 DoH~~ **v2.2 已撤销**: 节点域名必须在代理连上之前用国内 DNS 解析, 国外 DoH 直连不通会导致全部节点测速失败。v2.2 起 DNS/TUN 引导设置全部恢复 v1 已验证值 (含撤掉 respect-rules、auto-detect-interface 改回 false), 只保留分组与规则层面的新增。
 
 未接线说明: `Clash/rules/software.yaml` 是进程名规则 (Discord/Steam 等进程), 各进程目标组不同, 无法统一成一个规则集, 保持原样未接入。
 

@@ -1,7 +1,11 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v2.0 (qeadzcp fork)
+  // FlClash / Mihomo Perfect-Rules v2.2 (qeadzcp fork)
+  // v2.2 hotfix: DNS/TUN bootstrap settings restored to v1 verified values
+  // (proxy-server-nameserver back to domestic DoH, respect-rules removed,
+  // auto-detect-interface back to false) - v2.1 foreign DoH broke node
+  // domain resolution before proxy connect, causing all delay tests to fail.
   // v2.0 changes: Muse/Meta AI group, Ads REJECT, Disney+, Steam download direct,
   // Crypto group, region-detection fixes (GB/UK boundary, DE/FR/AU), DNS respect-rules,
   // Telegram GEOIP, AI/Muse groups prefer US nodes. See README section v2.0.
@@ -67,8 +71,6 @@ const main = (config) => {
 
     "enable": true,
 
-    "respect-rules": true,
-
     "listen": "0.0.0.0:53",
 
     "prefer-h3": false,
@@ -131,16 +133,6 @@ const main = (config) => {
         "https://doh.pub/dns-query"
       ],
 
-      "+.muse.ai": [
-        "https://cloudflare-dns.com/dns-query",
-        "https://dns.google/dns-query"
-      ],
-
-      "+.meta.ai": [
-        "https://cloudflare-dns.com/dns-query",
-        "https://dns.google/dns-query"
-      ],
-
       "geolocation-!cn": [
         "https://cloudflare-dns.com/dns-query",
         "https://dns.google/dns-query"
@@ -149,8 +141,8 @@ const main = (config) => {
     },
 
     "proxy-server-nameserver": [
-      "https://cloudflare-dns.com/dns-query",
-      "https://dns.google/dns-query"
+      "https://dns.alidns.com/dns-query",
+      "https://doh.pub/dns-query"
     ],
 
     "direct-nameserver": [
@@ -212,7 +204,7 @@ const main = (config) => {
 
     "auto-route": true,
 
-    "auto-detect-interface": true,
+    "auto-detect-interface": false,
 
     "strict-route": true,
 
