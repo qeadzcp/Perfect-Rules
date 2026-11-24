@@ -1,7 +1,9 @@
 const main = (config) => {
 
   // ================================================================
-  // FlClash / Mihomo Perfect-Rules v2.2 (qeadzcp fork)
+  // FlClash / Mihomo Perfect-Rules v2.3 (qeadzcp fork)
+  // v2.3: dedicated icons for Muse (robot), Crypto, Ads (reject),
+  // Other regions (globe), and real flags for DE/GB/FR/AU via flagcdn.
   // v2.2 hotfix: DNS/TUN bootstrap settings restored to v1 verified values
   // (proxy-server-nameserver back to domestic DoH, respect-rules removed,
   // auto-detect-interface back to false) - v2.1 foreign DoH broke node
@@ -339,15 +341,15 @@ const main = (config) => {
 
     "网络检测": "Network-test.png",
 
-    "Muse": "AI.png",
+    "Muse": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png",
 
     "Disney+": "Other.png",
 
-    "广告拦截": "Other.png",
+    "广告拦截": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Reject.png",
 
     "Steam下载": "China.png",
 
-    "加密货币": "Other.png",
+    "加密货币": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Cryptocurrency.png",
 
     "Netflix": "Netflix.png",
 
@@ -377,15 +379,15 @@ const main = (config) => {
 
     "加拿大": "Other.png",
 
-    "英国": "Other.png",
+    "英国": "https://flagcdn.com/w320/gb.png",
 
-    "德国": "Other.png",
+    "德国": "https://flagcdn.com/w320/de.png",
 
-    "法国": "Other.png",
+    "法国": "https://flagcdn.com/w320/fr.png",
 
-    "澳大利亚": "Other.png",
+    "澳大利亚": "https://flagcdn.com/w320/au.png",
 
-    "其他地区": "Other.png"
+    "其他地区": "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
 
   };
 
@@ -396,7 +398,13 @@ const main = (config) => {
       return undefined;
     }
 
-    return iconBaseURL + groupIcons[name];
+    const icon = groupIcons[name];
+
+    if (icon.indexOf("http") === 0) {
+      return icon;
+    }
+
+    return iconBaseURL + icon;
 
   }
 
